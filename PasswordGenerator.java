@@ -34,4 +34,14 @@ public class PasswordGenerator {
     public String generateStrong(int length) {
         return generate(length, true, true, true);
     }
+
+  
+    public static void main(String[] args) {
+        PasswordGenerator gen = new PasswordGenerator();
+        
+        System.out.println("Testing Password Generator");
+        System.out.println("8-char password: " + gen.generate(8, false, false, false));
+        System.out.println("12-char with numbers: " + gen.generate(12, true, true, false));
+        System.out.println("16-char strong: " + gen.generateStrong(16));
+    }
 }
