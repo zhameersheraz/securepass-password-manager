@@ -31,6 +31,24 @@ public class PasswordVault {
         return passwords.get(service);
     }
     
+    public void removePassword(String service) throws Exception {
+        passwords.remove(service);
+        saveVault();
+    }
+    
+    public Map<String, String> getAllServices() {
+        Map<String, String> services = new HashMap<>();
+        for (String service : passwords.keySet()) {
+            services.put(service, "********");
+        }
+        return services;
+    }
+    
+    public void lock() {
+        this.masterPassword = null;
+        this.passwords.clear();
+    }
+    
     private void saveVault() throws Exception {
         StringBuilder data = new StringBuilder();
         for (Map.Entry<String, String> entry : passwords.entrySet()) {
