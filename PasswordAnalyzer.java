@@ -11,6 +11,12 @@ public class PasswordAnalyzer {
         int score = 0;
         StringBuilder feedback = new StringBuilder();
         
+        BreachChecker breachChecker = new BreachChecker();
+        if (breachChecker.isBreached(password)) {
+            feedback.insert(0, "[ALERT] WARNING: This password appears in data breaches!\n");
+            score = 0;
+        }
+        
         if (password.length() < 8) {
             feedback.append("[X] Too short (minimum 8 characters)\n");
         } else if (password.length() >= 12) {
