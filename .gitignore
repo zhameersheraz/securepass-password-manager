@@ -1,0 +1,33 @@
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# IDE / editor
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# Build output
+bin/
+build/
+target/
+
+# Logs
+*.log
+
+# Vault files — never commit
+*.vault
+*.enc
+*.dat
+passwords.*
+
+# OS junk
+.DS_Store
+Thumbs.db

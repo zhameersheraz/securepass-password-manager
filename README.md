@@ -1,69 +1,79 @@
-# SecurePass - Professional Password Security Tool
+# SecurePass
 
-A production-ready password manager built with Java, demonstrating enterprise-level security practices.
+A Java CLI password manager demonstrating AES-256 encryption, PBKDF2 key
+derivation, and Have I Been Pwned (HIBP) breach detection.
+
+Built as a portfolio piece to practice cryptographic implementations
+in Java.
 
 ## Features
 
-- **Secure Password Generation** - Cryptographically secure random passwords
-- **Strength Analysis** - Detailed feedback on password security
-- **Encrypted Vault** - AES-256 encryption with PBKDF2 key derivation
-- **Breach Detection** - Checks against 10+ billion compromised passwords
-- **Zero-Knowledge Architecture** - Master password never stored
+- **Password generation** — cryptographically secure random passwords
+- **Strength analysis** — feedback on length, character variety, and common patterns
+- **Encrypted vault** — AES-256-CBC with per-encryption salt and IV
+- **Breach detection** — HIBP k-anonymity API to check against known leaks
+- **Zero-knowledge** — master password is never stored
 
-## Security Features
+## How it works
 
-- AES-256-CBC encryption
-- PBKDF2 key derivation (65,536 iterations)
-- Secure random number generation
-- Salt and IV per encryption
-- Have I Been Pwned API integration
+| Stage               | Algorithm                            |
+| ------------------- | ------------------------------------ |
+| Key derivation      | PBKDF2-HMAC-SHA256, 65,536 iterations|
+| Cipher              | AES-256-CBC                          |
+| Salt                | 16 bytes, random per encryption      |
+| IV                  | 16 bytes, random per encryption      |
+| Random              | `java.security.SecureRandom`         |
 
-## How to Run
+The master password is never persisted. Each vault file is independently
+encrypted, so a leak of one file does not affect the others.
+
+## How to run
+
+Requires Java 8 or newer.
+
 ```bash
 javac SecurePassApp.java
 java SecurePassApp
 ```
 
+Follow the on-screen menu to generate, analyze, or store passwords.
+
 ## Usage
 
-### Generate Strong Password
-1. Choose option 1
-2. Set length and character types
-3. Get cryptographically secure password
+### Generate a strong password
+Pick option `1`, set length and character types, get a secure random password.
 
-### Check Password Security
-1. Choose option 2
-2. Enter password to analyze
-3. Receive detailed security report
+### Check a password
+Pick option `2`, enter a password, get a strength report and breach check.
 
-### Password Vault
-1. Choose option 3
-2. Create/enter master password
-3. Store unlimited passwords securely
+### Use the encrypted vault
+Pick option `3`, set a master password, then add and retrieve entries.
 
-## Security Notice
+## Limitations
 
-This is a demonstration project. For production use:
-- Add 2FA authentication
-- Implement secure key storage
-- Add password expiration
-- Enable audit logging
+This is a single-file demonstration project, **not** a production password
+manager. Notable gaps:
+
+- No 2FA
+- Master password is held in process memory while running
+- No password expiry or rotation policy
+- No audit logging
+- No concurrent-access safety
+
+For real password management, use [1Password](https://1password.com),
+[Bitwarden](https://bitwarden.com), or [KeePass](https://keepass.info).
+
+## Security note
+
+The HIBP integration uses the [k-anonymity API](https://haveibeenpwned.com/API/v3#PwnedPasswords),
+so the full password is never sent — only the first 5 characters of its
+SHA-1 hash. The vault stores ciphertext + IV + salt, never the master
+password.
 
 ## Author
 
-**Zhameer Sheraz Tampugao**
-Computer Science Student | Cybersecurity Enthusiast
-
-Built in 2026 as part of my GitHub portfolio demonstrating:
-- Cryptographic implementations
-- Security best practices
-- Clean code architecture
-- Real-world problem solving
+Zhameer Sheraz Tampugao — [github.com/zhameersheraz](https://github.com/zhameersheraz)
 
 ## License
 
-MIT License - Educational purposes
-
----
-
-**Note:** Never reuse the master password. Choose a strong, unique master password for the vault.
+MIT — see [LICENSE](LICENSE).
